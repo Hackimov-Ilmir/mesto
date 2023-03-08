@@ -9,7 +9,7 @@
   background-repeat: no-repeat;
   background-position: center;
   cursor: pointer;
-  align-self: center;
+  align-self: end;
 }
 
 .card__button:hover {

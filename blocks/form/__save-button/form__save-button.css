@@ -10,6 +10,7 @@
   text-align: center;
   color: #ffffff;
   cursor: pointer;
+  border-radius: 2px;
 }
 
 .form__save-button:hover {

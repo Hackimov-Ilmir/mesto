@@ -29,7 +29,7 @@
               class="card__image"
             />
             <div class="card__bottom">
-              <p class="card__description">Карачаевск</p>
+              <h2 class="card__description">Карачаевск</h2>
               <button class="card__button" type="button"></button>
             </div>
           </div>
@@ -40,7 +40,7 @@
               class="card__image"
             />
             <div class="card__bottom">
-              <p class="card__description">Гора Эльбрус</p>
+              <h2 class="card__description">Гора Эльбрус</h2>
               <button class="card__button" type="button"></button>
             </div>
           </div>
@@ -51,7 +51,7 @@
               class="card__image"
             />
             <div class="card__bottom">
-              <p class="card__description">Домбай</p>
+              <h2 class="card__description">Домбай</h2>
               <button class="card__button" type="button"></button>
             </div>
           </div>
@@ -62,7 +62,7 @@
               class="card__image"
             />
             <div class="card__bottom">
-              <p class="card__description">Гора Эльбрус</p>
+              <h2 class="card__description">Гора Эльбрус</h2>
               <button class="card__button" type="button"></button>
             </div>
           </div>
@@ -73,7 +73,7 @@
               class="card__image"
             />
             <div class="card__bottom">
-              <p class="card__description">Домбай</p>
+              <h2 class="card__description">Домбай</h2>
               <button class="card__button" type="button"></button>
             </div>
           </div>
@@ -84,7 +84,7 @@
               class="card__image"
             />
             <div class="card__bottom">
-              <p class="card__description">Карачаево-Черкессия</p>
+              <h2 class="card__description">Карачаево-Черкессия</h2>
               <button class="card__button" type="button"></button>
             </div>
           </div>
@@ -95,10 +95,18 @@
       </footer>
       <div class="popup">
         <div class="popup__container">
-          <form class="form">
-            <h2 class="form__title">Редактировать профиль</h2>
-            <input type="text" class="form__nickname" />
-            <input type="text" class="form__description" />
+          <h2 class="form__title">Редактировать профиль</h2>
+          <form class="form" name="form-popup">
+            <input
+              type="text"
+              class="form__input form__input_type_nickname"
+              name="input-nickname"
+            />
+            <input
+              type="text"
+              class="form__input form__input_type_description"
+              name="input-description"
+            />
             <button class="form__save-button" type="submit">Сохранить</button>
           </form>
           <button class="popup__close-button" type="button"></button>
