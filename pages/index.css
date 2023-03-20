@@ -30,6 +30,5 @@
 @import url(../blocks/header/__logo/header__logo.css);
 @import url(../blocks/card/__delete-button/card__delete-button.css);
 @import url(../blocks/popup/__image/popup__image.css);
-@import url(../blocks/popup/__image-container/popup_type_image.css);
 @import url(../blocks/popup/__image-container/popup__image-container.css);
 @import url(../blocks/popup/__image-description/popup__image-description.css);
