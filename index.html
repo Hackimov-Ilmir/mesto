@@ -21,9 +21,7 @@
           </div>
           <button class="profile__add-button" type="button"></button>
         </section>
-        <section class="cards">
-
-        </section>
+        <section class="cards"></section>
       </main>
       <footer class="footer">
         <p class="footer__text">&copy; 2020 Mesto Russia</p>
@@ -31,19 +29,33 @@
       <div class="popup popup_type_edit-profile">
         <div class="popup__container">
           <h2 class="popup__title">Редактировать профиль</h2>
-          <form class="form" name="form-popup">
+          <form class="form" name="form-popup" novalidate>
             <input
               type="text"
               class="form__input form__input_type_nickname"
               name="input-nickname"
               placeholder="Имя"
+              required
+              minlength="2"
+              maxlength="40"
+              id="form__name-input"
             />
+            <span class="form__input-error" id="form__name-input-error"
+              >Вы пропустили это поле.</span
+            >
             <input
               type="text"
               class="form__input form__input_type_description"
               name="input-description"
               placeholder="Вид деятельности"
+              required
+              minlength="2"
+              maxlength="200"
+              id="form__description-input"
             />
+            <span class="form__input-error" id="form__description-input-error"
+              >Вы пропустили это поле.</span
+            >
             <button class="form__save-button" type="submit">Сохранить</button>
           </form>
           <button class="popup__close-button" type="button"></button>
@@ -52,19 +64,31 @@
       <div class="popup popup_type_new-place">
         <div class="popup__container">
           <h2 class="popup__title">Новое место</h2>
-          <form class="form" name="form-popup">
+          <form class="form" name="form-popup" novalidate>
             <input
               type="text"
               class="form__input form__input_type_place-name"
               name="input-place-name"
               placeholder="Название"
+              required
+              minlength="2"
+              maxlength="30"
+              id="form__place-name-input"
             />
+            <span class="form__input-error" id="form__place-name-input-error"
+              >Вы пропустили это поле.</span
+            >
             <input
-              type="text"
+              type="url"
               class="form__input form__input_type_url"
               name="input-url"
               placeholder="Ссылка на картинку"
+              required
+              id="form__url-input"
             />
+            <span class="form__input-error" id="form__url-input-error"
+              >Введите адрес сайта.</span
+            >
             <button class="form__save-button" type="submit">Создать</button>
           </form>
           <button class="popup__close-button" type="button"></button>
@@ -72,7 +96,7 @@
       </div>
       <div class="popup popup_type_image">
         <div class="popup__image-container">
-          <img src="." alt="" class="popup__image">
+          <img src="." alt="" class="popup__image" />
           <p class="popup__image-description"></p>
           <button class="popup__close-button" type="button"></button>
         </div>
@@ -80,11 +104,7 @@
     </div>
     <template class="card-template">
       <div class="card">
-        <img
-          src="."
-          alt=""
-          class="card__image"
-        />
+        <img src="." alt="" class="card__image" />
         <div class="card__bottom">
           <h2 class="card__description"></h2>
           <button class="card__button" type="button"></button>
@@ -93,6 +113,7 @@
       </div>
     </template>
     <script src="./scripts/constants.js"></script>
+    <script src="./scripts/validate.js"></script>
     <script src="./scripts/index.js"></script>
   </body>
 </html>
