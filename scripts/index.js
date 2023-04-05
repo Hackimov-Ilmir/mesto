@@ -33,7 +33,7 @@ function handleSubmitEditProfileForm(evt) {
 }
 
 profileEditButton.addEventListener('click', () => {
-  openEditProfileForm(), enableValidation(validationConfig);
+  openEditProfileForm();
 });
 
 closeProfileFormButton.addEventListener('click', () =>
@@ -72,7 +72,6 @@ formNewPlace.addEventListener('submit', (evt) => {
 
 addButton.addEventListener('click', () => {
   openPopupNewPlaceElement();
-  enableValidation(validationConfig);
 });
 
 popupNewPlaceElement.addEventListener('click', (evt) => {
@@ -93,10 +92,12 @@ function openPopupNewPlaceElement() {
 
 function openPopup(popup) {
   popup.classList.add('popup_opened');
+  document.addEventListener('keydown', closeByEsc);
 }
 
 function closePopup(popup) {
   popup.classList.remove('popup_opened');
+  document.removeEventListener('keydown', closeByEsc);
 }
 
 const cardTemplate = document.querySelector('.card-template').content;
@@ -163,10 +164,11 @@ function createCard(item) {
   return cardElement;
 }
 
-document.addEventListener('keydown', (event) => {
-  if (event.key == 'Escape') {
-    closePopup(popupNewPlaceElement);
-    closePopup(popupProfileElement);
-    closePopup(popupImage);
+function closeByEsc(evt) {
+  if (evt.key === 'Escape') {
+    const openedPopup = document.querySelector('.popup_opened');
+    closePopup(openedPopup);
   }
-});
+}
+
+enableValidation(validationConfig);
