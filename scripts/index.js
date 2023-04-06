@@ -15,8 +15,6 @@ const profileDescriptionInput = popupProfileElement.querySelector(
 );
 const profileFormElement = popupProfileElement.querySelector('.form');
 
-popupProfileElement;
-
 popupProfileElement.addEventListener('click', (evt) => {
   if (evt.currentTarget === evt.target) {
     closePopup(popupProfileElement);
@@ -84,10 +82,15 @@ closeNewPlaceButton.addEventListener('click', () =>
   closePopup(popupNewPlaceElement)
 );
 
+const newPlaceSubmitButton = document.querySelector(
+  '.form__save-button_new-place'
+);
+
 function openPopupNewPlaceElement() {
   openPopup(popupNewPlaceElement);
   formNameInput.value = '';
   formUrlInput.value = '';
+  disableButton(newPlaceSubmitButton, validationConfig);
 }
 
 function openPopup(popup) {
