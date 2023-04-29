@@ -1,28 +1,36 @@
 class FormValidator {
   #settings;
   #form;
+  #formButton;
+  #formInputs;
 
   constructor(settings, form) {
     this.#settings = settings;
     this.#form = form;
+    this.#formButton = this.#form.querySelector(
+      this.#settings.submitButtonSelector
+    );
+    this.#formInputs = Array.from(
+      form.querySelectorAll(this.#settings.inputSelector)
+    );
   }
 
   enableValidation() {
     this.#setEventListeners(this.#form);
   }
 
+  disableSubmitButton() {
+    this.#disableButton(this.#formButton);
+  }
+
   #setEventListeners(form) {
-    const formInputs = Array.from(
-      form.querySelectorAll(this.#settings.inputSelector)
-    );
-    const formButton = form.querySelector(this.#settings.submitButtonSelector);
-    formInputs.forEach((input) => {
+    this.#formInputs.forEach((input) => {
       input.addEventListener('input', () => {
         this.#checkInputValidity(input);
-        if (this.#hasInvalidInput(formInputs)) {
-          this.#disableButton(formButton);
+        if (this.#hasInvalidInput(this.#formInputs)) {
+          this.#disableButton(this.#formButton);
         } else {
-          this.#enableButton(formButton);
+          this.#enableButton(this.#formButton);
         }
       });
     });

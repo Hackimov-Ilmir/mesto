@@ -1,7 +1,13 @@
-import initialCards from './constants.js';
+import {
+  initialCards,
+  popupImage,
+  popupImageElement,
+  popupImageDescription,
+} from './constants.js';
 import validationConfig from './validate.js';
 import Card from './Card.js';
 import FormValidator from './FormValidator.js';
+import { openPopup, closeByEsc, closePopup } from './utils.js';
 
 const profileEditButton = document.querySelector('.profile__edit-button');
 const popupProfileElement = document.querySelector('.popup_type_edit-profile');
@@ -66,9 +72,9 @@ const formUrlInput = formNewPlace.querySelector('.form__input_type_url');
 formNewPlace.addEventListener('submit', (evt) => {
   evt.preventDefault();
 
-  const cardTemplateqqq = new Card(formNameInput.value, formUrlInput.value);
+  const card = createCard(formNameInput.value, formUrlInput.value);
 
-  cards.prepend(cardTemplateqqq.getCard());
+  cards.prepend(card.getCard());
 
   closePopup(popupNewPlaceElement);
 });
@@ -95,33 +101,23 @@ function openPopupNewPlaceElement() {
   openPopup(popupNewPlaceElement);
   formNameInput.value = '';
   formUrlInput.value = '';
-  disableButton(newPlaceSubmitButton, validationConfig);
-}
-
-function openPopup(popup) {
-  popup.classList.add('popup_opened');
-  document.addEventListener('keydown', closeByEsc);
-}
-
-function closePopup(popup) {
-  popup.classList.remove('popup_opened');
-  document.removeEventListener('keydown', closeByEsc);
+  popupNewPlaceElementValidator.disableSubmitButton();
 }
 
 const cardTemplate = document.querySelector('.card-template').content;
 const cards = document.querySelector('.cards');
 
+function createCard(itemName, itemLink) {
+  const initialCard = new Card(itemName, itemLink, `card-template`);
+  return initialCard;
+}
+
 initialCards.forEach((item) => {
-  const initialCard = new Card(item.name, item.link);
+  const initialCard = createCard(item.name, item.link);
 
   cards.append(initialCard.getCard());
 });
 
-const popupImage = document.querySelector('.popup_type_image');
-const popupImageElement = popupImage.querySelector('.popup__image');
-const popupImageDescription = popupImage.querySelector(
-  '.popup__image-description'
-);
 const buttonCloseImage = popupImage.querySelector('.popup__close-button');
 
 popupImage.addEventListener('click', (evt) => {
@@ -142,13 +138,6 @@ function openImagePopup() {
   popupImageElement.src = item.link;
   popupImageElement.alt = item.name;
   popupImageDescription.textContent = item.name;
-}
-
-function closeByEsc(evt) {
-  if (evt.key === 'Escape') {
-    const openedPopup = document.querySelector('.popup_opened');
-    closePopup(openedPopup);
-  }
 }
 
 const popupNewPlaceElementValidator = new FormValidator(

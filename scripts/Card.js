@@ -1,19 +1,24 @@
 import {
-  openPopup,
   popupImage,
   popupImageElement,
   popupImageDescription,
-} from './index.js';
+} from './constants.js';
+import { openPopup } from './utils.js';
 
 class Card {
   #name;
   #link;
-  #template = document.querySelector('.card-template').content.cloneNode(true);
+  #template;
   #card;
+  #cardImage;
 
-  constructor(name, link) {
+  constructor(name, link, templateSelector) {
     this.#name = name;
     this.#link = link;
+    this.#template = document
+      .querySelector(`.${templateSelector}`)
+      .content.cloneNode(true);
+    this.#cardImage = this.#template.children[0].querySelector('.card__image');
   }
 
   #likeCard() {
@@ -51,8 +56,8 @@ class Card {
 
   #createCard() {
     this.#card = this.#template.children[0];
-    this.#card.querySelector('.card__image').src = this.#link;
-    this.#card.querySelector('.card__image').alt = this.#name;
+    this.#cardImage.src = this.#link;
+    this.#cardImage.alt = this.#name;
     this.#card.querySelector('.card__description').textContent = this.#name;
 
     this.#setListeners();
