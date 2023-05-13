@@ -1,24 +1,19 @@
-import {
-  popupImage,
-  popupImageElement,
-  popupImageDescription,
-} from './constants.js';
-import { openPopup } from './utils.js';
-
 class Card {
   #name;
   #link;
   #template;
   #card;
   #cardImage;
+  #handleCardClick;
 
-  constructor(name, link, templateSelector) {
+  constructor(name, link, templateSelector, handleCardClick) {
     this.#name = name;
     this.#link = link;
     this.#template = document
       .querySelector(`.${templateSelector}`)
       .content.cloneNode(true);
     this.#cardImage = this.#template.children[0].querySelector('.card__image');
+    this.#handleCardClick = handleCardClick;
   }
 
   #likeCard() {
@@ -40,11 +35,7 @@ class Card {
 
   #openImagePopup() {
     this.#card.querySelector('.card__image').addEventListener('click', () => {
-      openPopup(popupImage);
-
-      popupImageElement.src = this.#link;
-      popupImageElement.alt = this.#name;
-      popupImageDescription.textContent = this.#name;
+      this.#handleCardClick();
     });
   }
 
