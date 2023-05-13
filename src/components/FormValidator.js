@@ -23,7 +23,7 @@ class FormValidator {
     this.#disableButton(this.#formButton);
   }
 
-  #setEventListeners(form) {
+  #setEventListeners() {
     this.#formInputs.forEach((input) => {
       input.addEventListener('input', () => {
         this.#checkInputValidity(input);
@@ -50,18 +50,18 @@ class FormValidator {
     }
   }
 
-  #hasInvalidInput(formInputs) {
-    return formInputs.some((item) => !item.validity.valid);
+  #hasInvalidInput() {
+    return this.#formInputs.some((item) => !item.validity.valid);
   }
 
-  #enableButton(button) {
-    button.classList.remove(this.#settings.inactiveButtonClass);
-    button.removeAttribute('disabled');
+  #enableButton() {
+    this.#formButton.classList.remove(this.#settings.inactiveButtonClass);
+    this.#formButton.removeAttribute('disabled');
   }
 
-  #disableButton(button) {
-    button.classList.add(this.#settings.inactiveButtonClass);
-    button.setAttribute('disabled', true);
+  #disableButton() {
+    this.#formButton.classList.add(this.#settings.inactiveButtonClass);
+    this.#formButton.setAttribute('disabled', true);
   }
 }
 

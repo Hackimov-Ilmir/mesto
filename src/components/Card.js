@@ -27,8 +27,7 @@ class Card {
   #deleteCard() {
     this.#template
       .querySelector('.card__delete-button')
-      .addEventListener('click', (event) => {
-        event.target.closest('.card');
+      .addEventListener('click', () => {
         this.#card.remove();
       });
   }
