@@ -70,11 +70,11 @@ function openNewPlacePopup() {
 buttonAddCard.addEventListener('click', openNewPlacePopup);
 
 const popupWithImage = new PopupWithImage('.popup_type_image');
+popupWithImage.setEventListeners();
 
 function getCard(name, link) {
   const card = new Card(name, link, `card-template`, () => {
     popupWithImage.open(name, link);
-    popupWithImage.setEventListeners();
   });
   return card.getCard();
 }
