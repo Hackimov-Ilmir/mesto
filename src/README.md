@@ -1,6 +1,6 @@
 # Проект: Место
 
-Ссылка на проект: https://hackimov-ilmir.github.io/mesto/index.html
+Ссылка на проект: https://hackimov-ilmir.github.io/mesto/
 
 ## Примененные технологии
 
@@ -13,3 +13,5 @@
 7. Верстка по макету Figma
 8. Использование pixel perfect
 9. Использование JS
+10. Применено ООП
+11. Использован Webpack

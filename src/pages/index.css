@@ -37,3 +37,7 @@
 @import url(../blocks/form/__input-error/_visible/form__input-error_visible.css);
 @import url(../blocks/form/__input/_novalid/form__input_novalid.css);
 @import url(../blocks/popup/_type/popup_type_image.css);
+@import url(../blocks/card/__like-count/card__like-count.css);
+@import url(../blocks/popup/__delete-confirm-button/popup__delete-confirm-button.css);
+@import url(../blocks/popup/__container/_type/popup__container_type_delete-confirm.css);
+@import url(../blocks/card/__delete-button/_visible/card__delete-button_visible.css);
