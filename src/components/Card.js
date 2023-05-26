@@ -48,21 +48,19 @@ class Card {
     return this.#likesArray.find((like) => like._id === this.#userId);
   }
 
-  #likeCardActive() {
+  #likeCardActive = () => {
     if (this.cardIsLiked()) {
       this.#cardLikeButton.classList.add('card__button_active');
     } else {
       this.#cardLikeButton.classList.remove('card__button_active');
     }
-  }
+  };
 
   #likedCard() {
     if (this.cardIsLiked()) {
-      console.log('true');
-      this.#handleCardLikeDelete(this.#cardId);
+      return this.#handleCardLikeDelete(this.#cardId);
     } else {
-      console.log('false');
-      this.#handleCardLike(this.#cardId);
+      return this.#handleCardLike(this.#cardId);
     }
   }
 
@@ -70,15 +68,13 @@ class Card {
     this.#template
       .querySelector('.card__button')
       .addEventListener('click', (event) => {
-        console.log(event.target);
-        event.target.classList.toggle('card__button_active');
-        this.#likeCardActive();
-        this.#likedCard();
+        this.#likedCard().then(this.#likeCardActive);
       });
   }
 
   setCardLikes(likes) {
-    this.#likes.textContent = likes;
+    this.#likesArray = likes;
+    this.#likes.textContent = likes.length;
   }
 
   deleteCardPopupOpen() {

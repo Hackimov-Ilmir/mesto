@@ -22,12 +22,24 @@ const profileNameInput = popupProfileElement.querySelector(
 const profileDescriptionInput = popupProfileElement.querySelector(
   '.form__input_type_description'
 );
+const avatarButton = document.querySelector('.profile__avatar-container');
+const avatarImage = document.querySelector('.profile__avatar');
+const formSaveButtonNewPlace = document.querySelector(
+  '.form__save-button_new-place'
+);
+const formSaveButtonProfileEdit = document.querySelector(
+  '.form__save-button_profile-edit'
+);
+const formSaveButtonUpdateAvatar = document.querySelector(
+  '.form__save-button_update-avatar'
+);
 
 Promise.all([api.getInitialCards(), api.getUserInfo()]).then(
   ([item, userData]) => {
     const userId = userData._id;
     renderItems.renderInitialItems(item, userId);
     userInfo.setUserInfo(userData.name, userData.about);
+    avatarImage.src = userData.avatar;
   }
 );
 
@@ -44,9 +56,14 @@ const popupFormEditProfile = new PopupWithForm(
 popupFormEditProfile.setEventListeners();
 
 function handleSubmitFormEditProfile(values) {
-  api.updateUserInfo(values.input_nickname, values.input_description);
-  userInfo.setUserInfo(values.input_nickname, values.input_description);
-  popupFormEditProfile.close();
+  formSaveButtonProfileEdit.textContent = 'Сохранение...';
+  api
+    .updateUserInfo(values.input_nickname, values.input_description)
+    .then((res) => {
+      userInfo.setUserInfo(res.name, res.about);
+      popupFormEditProfile.close();
+      formSaveButtonProfileEdit.textContent = 'Сохранить';
+    });
 }
 
 function openProfileEditPopup() {
@@ -69,6 +86,7 @@ const popupFormNewPlace = new PopupWithForm(
 popupFormNewPlace.setEventListeners();
 
 function handleSubmitFormNewCard(item) {
+  formSaveButtonNewPlace.textContent = 'Создание...';
   api.addNewCard(item.input_placename, item.input_url).then((res) => {
     renderItems.addItem(
       getCard(
@@ -82,6 +100,7 @@ function handleSubmitFormNewCard(item) {
       ),
       popupFormNewPlace.closeWithReset()
     );
+    formSaveButtonNewPlace.textContent = 'Создать';
   });
 }
 
@@ -90,6 +109,28 @@ function openNewPlacePopup() {
 }
 
 buttonAddCard.addEventListener('click', openNewPlacePopup);
+
+const popupAvatarUpdate = new PopupWithForm(
+  '.popup_type_update-avatar',
+  handleSubmitUpdateAvatar
+);
+
+popupAvatarUpdate.setEventListeners();
+
+function openAvatarUpdatePopup() {
+  popupAvatarUpdate.open();
+}
+
+function handleSubmitUpdateAvatar(values) {
+  formSaveButtonUpdateAvatar.textContent = 'Сохранение...';
+  api.updateAvatar(values.input_url_avatar).then((res) => {
+    avatarImage.src = res.avatar;
+    popupAvatarUpdate.close();
+    formSaveButtonUpdateAvatar.textContent = 'Сохранить';
+  });
+}
+
+avatarButton.addEventListener('click', openAvatarUpdatePopup);
 
 const popupWithImage = new PopupWithImage('.popup_type_image');
 popupWithImage.setEventListeners();
@@ -125,13 +166,13 @@ function getCard(
       popupWithConfirmation.open(cardId, card);
     },
     (cardId) => {
-      api.putCardLike(cardId).then((res) => {
-        card.setCardLikes(res.likes.length);
+      return api.putCardLike(cardId).then((res) => {
+        card.setCardLikes(res.likes);
       });
     },
     (cardId) => {
-      api.deleteCardLike(cardId).then((res) => {
-        card.setCardLikes(res.likes.length);
+      return api.deleteCardLike(cardId).then((res) => {
+        card.setCardLikes(res.likes);
       });
     }
   );

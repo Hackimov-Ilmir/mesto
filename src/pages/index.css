@@ -41,3 +41,5 @@
 @import url(../blocks/popup/__delete-confirm-button/popup__delete-confirm-button.css);
 @import url(../blocks/popup/__container/_type/popup__container_type_delete-confirm.css);
 @import url(../blocks/card/__delete-button/_visible/card__delete-button_visible.css);
+@import url(../blocks/profile/__avatar-container/profile__avatar-container.css);
+@import url(../blocks/popup/__container/_type/popup__container_type_avatar-update.css);
