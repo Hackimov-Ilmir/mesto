@@ -13,6 +13,7 @@ import UserInfo from '../components/UserInfo.js';
 import './index.css';
 import { api } from '../components/Api.js';
 import PopupWithConfirmation from '../components/PopupWithConfirmation.js';
+import { renderLoading } from '../utils/utils.js';
 
 const profileEditButton = document.querySelector('.profile__edit-button');
 const popupProfileElement = document.querySelector('.popup_type_edit-profile');
@@ -33,15 +34,23 @@ const formSaveButtonProfileEdit = document.querySelector(
 const formSaveButtonUpdateAvatar = document.querySelector(
   '.form__save-button_update-avatar'
 );
+const popupUpdateAvatarElement = document.querySelector(
+  '.popup_type_update-avatar'
+);
+const formCardDeleteButton = document.querySelector(
+  '.popup__delete-confirm-button'
+);
 
-Promise.all([api.getInitialCards(), api.getUserInfo()]).then(
-  ([item, userData]) => {
+Promise.all([api.getInitialCards(), api.getUserInfo()])
+  .then(([item, userData]) => {
     const userId = userData._id;
     renderItems.renderInitialItems(item, userId);
     userInfo.setUserInfo(userData.name, userData.about);
     avatarImage.src = userData.avatar;
-  }
-);
+  })
+  .catch((err) => {
+    console.log(err);
+  });
 
 const userInfo = new UserInfo({
   userNameSelector: '.profile__info-nickname',
@@ -56,14 +65,14 @@ const popupFormEditProfile = new PopupWithForm(
 popupFormEditProfile.setEventListeners();
 
 function handleSubmitFormEditProfile(values) {
-  formSaveButtonProfileEdit.textContent = 'Сохранение...';
+  renderLoading(formSaveButtonProfileEdit, 'Сохранение...');
   api
     .updateUserInfo(values.input_nickname, values.input_description)
     .then((res) => {
       userInfo.setUserInfo(res.name, res.about);
       popupFormEditProfile.close();
-      formSaveButtonProfileEdit.textContent = 'Сохранить';
-    });
+    })
+    .finally(() => renderLoading(formSaveButtonProfileEdit, 'Сохранить'));
 }
 
 function openProfileEditPopup() {
@@ -86,22 +95,28 @@ const popupFormNewPlace = new PopupWithForm(
 popupFormNewPlace.setEventListeners();
 
 function handleSubmitFormNewCard(item) {
-  formSaveButtonNewPlace.textContent = 'Создание...';
-  api.addNewCard(item.input_placename, item.input_url).then((res) => {
-    renderItems.addItem(
-      getCard(
-        item.input_placename,
-        item.input_url,
-        res.likes.length,
-        res._id,
-        res.owner._id,
-        res.owner._id,
-        res.likes
-      ),
-      popupFormNewPlace.closeWithReset()
-    );
-    formSaveButtonNewPlace.textContent = 'Создать';
-  });
+  renderLoading(formSaveButtonNewPlace, 'Создание...');
+  api
+    .addNewCard(item.input_placename, item.input_url)
+    .then((res) => {
+      renderItems.addItem(
+        getCard(
+          item.input_placename,
+          item.input_url,
+          res.likes.length,
+          res._id,
+          res.owner._id,
+          res.owner._id,
+          res.likes
+        ),
+        popupFormNewPlace.closeWithReset(),
+        popupNewPlaceElementValidator.disableSubmitButton()
+      );
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+    .finally(() => renderLoading(formSaveButtonNewPlace, 'Создать'));
 }
 
 function openNewPlacePopup() {
@@ -122,12 +137,18 @@ function openAvatarUpdatePopup() {
 }
 
 function handleSubmitUpdateAvatar(values) {
-  formSaveButtonUpdateAvatar.textContent = 'Сохранение...';
-  api.updateAvatar(values.input_url_avatar).then((res) => {
-    avatarImage.src = res.avatar;
-    popupAvatarUpdate.close();
-    formSaveButtonUpdateAvatar.textContent = 'Сохранить';
-  });
+  renderLoading(formSaveButtonUpdateAvatar, 'Сохранение...');
+  api
+    .updateAvatar(values.input_url_avatar)
+    .then((res) => {
+      avatarImage.src = res.avatar;
+      popupAvatarUpdate.closeWithReset();
+      popupUpdateAvatarElementValidator.disableSubmitButton();
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+    .finally(() => renderLoading(formSaveButtonUpdateAvatar, 'Сохранить'));
 }
 
 avatarButton.addEventListener('click', openAvatarUpdatePopup);
@@ -138,10 +159,18 @@ popupWithImage.setEventListeners();
 const popupWithConfirmation = new PopupWithConfirmation(
   '.popup_type_delete-confirm',
   (cardId, card) => {
-    api.deleteCard(cardId).then(() => {
-      card.deleteCard();
-      popupWithConfirmation.close();
-    });
+    renderLoading(formCardDeleteButton, 'Удаление...');
+    api
+      .deleteCard(cardId)
+      .then(() => {
+        card.deleteCard();
+        popupWithConfirmation.close();
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+
+      .finally(() => renderLoading(formCardDeleteButton, 'Да'));
   }
 );
 
@@ -166,14 +195,24 @@ function getCard(
       popupWithConfirmation.open(cardId, card);
     },
     (cardId) => {
-      return api.putCardLike(cardId).then((res) => {
-        card.setCardLikes(res.likes);
-      });
+      return api
+        .putCardLike(cardId)
+        .then((res) => {
+          card.setCardLikes(res.likes);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
     (cardId) => {
-      return api.deleteCardLike(cardId).then((res) => {
-        card.setCardLikes(res.likes);
-      });
+      return api
+        .deleteCardLike(cardId)
+        .then((res) => {
+          card.setCardLikes(res.likes);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
   );
   return card.getCard();
@@ -206,8 +245,13 @@ const popupProfileElementValidator = new FormValidator(
   validationConfig,
   popupProfileElement
 );
+const popupUpdateAvatarElementValidator = new FormValidator(
+  validationConfig,
+  popupUpdateAvatarElement
+);
 
 popupNewPlaceElementValidator.enableValidation();
 popupProfileElementValidator.enableValidation();
+popupUpdateAvatarElementValidator.enableValidation();
 
 export { popupImage, popupImageElement, popupImageDescription };

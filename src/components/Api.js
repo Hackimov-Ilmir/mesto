@@ -9,24 +9,19 @@ class Api {
     this.#authorization = this.#headers.authorization;
   }
 
+  #checkServerStatus(res) {
+    if (res.ok) {
+      return res.json();
+    }
+    return Promise.reject(`Ошибка: ${res.status}`);
+  }
+
   getInitialCards() {
     return fetch(`${this.#url}/cards`, {
       headers: {
         authorization: this.#authorization,
       },
-    })
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-        return Promise.reject(`Ошибка: ${res.status}`);
-      })
-      .then((result) => {
-        return result;
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    }).then((res) => this.#checkServerStatus(res));
   }
 
   getUserInfo() {
@@ -34,19 +29,7 @@ class Api {
       headers: {
         authorization: this.#authorization,
       },
-    })
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-        return Promise.reject(`Ошибка: ${res.status}`);
-      })
-      .then((result) => {
-        return result;
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    }).then((res) => this.#checkServerStatus(res));
   }
 
   updateUserInfo(name, about) {
@@ -60,19 +43,7 @@ class Api {
         name: name,
         about: about,
       }),
-    })
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-        return Promise.reject(`Ошибка: ${res.status}`);
-      })
-      .then((result) => {
-        return result;
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    }).then((res) => this.#checkServerStatus(res));
   }
 
   addNewCard(name, link) {
@@ -86,19 +57,7 @@ class Api {
         name: name,
         link: link,
       }),
-    })
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-        return Promise.reject(`Ошибка: ${res.status}`);
-      })
-      .then((result) => {
-        return result;
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    }).then((res) => this.#checkServerStatus(res));
   }
 
   deleteCard(cardId) {
@@ -118,19 +77,7 @@ class Api {
         authorization: this.#authorization,
         'Content-Type': 'application/json',
       },
-    })
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-        return Promise.reject(`Ошибка: ${res.status}`);
-      })
-      .then((result) => {
-        return result;
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    }).then((res) => this.#checkServerStatus(res));
   }
 
   deleteCardLike(cardId) {
@@ -140,19 +87,7 @@ class Api {
         authorization: this.#authorization,
         'Content-Type': 'application/json',
       },
-    })
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-        return Promise.reject(`Ошибка: ${res.status}`);
-      })
-      .then((result) => {
-        return result;
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    }).then((res) => this.#checkServerStatus(res));
   }
 
   updateAvatar(avatar) {
@@ -165,19 +100,7 @@ class Api {
       body: JSON.stringify({
         avatar: avatar,
       }),
-    })
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-        return Promise.reject(`Ошибка: ${res.status}`);
-      })
-      .then((result) => {
-        return result;
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    }).then((res) => this.#checkServerStatus(res));
   }
 }
 
